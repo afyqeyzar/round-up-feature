@@ -1,11 +1,12 @@
-import { useEffect } from "react"
-// import { get } from 'https';
-// import { react } from '@babel/types';
+import { useEffect, useState } from "react"
+import { findRenderedDOMComponentWithClass } from "react-dom/test-utils";
+import getAccountsAPI from "./APIMethods"
 
 const App = () => {
 
+  const [searchTerm, setSearchTerm] = useState('first')
+
   const getAccountsAPI = async () => {
-    // console.log(process.env);
     const response = await fetch('/api/v2/accounts', {
       method: "GET",
       headers: {
@@ -14,17 +15,19 @@ const App = () => {
     });
     const accountsData = await response.json();
 
-    console.log(accountsData.accounts[0])
+    const accountUid = accountsData.accounts[0].accountUid;
+    return accountUid 
   };
 
 
   useEffect(() => {
-    getAccountsAPI();
+    const b = getAccountsAPI();
+    console.log(b);
   }, []);
 
   return (
     <div className="App">
-      test
+      <h1>test</h1>
     </div>
   );
 }
