@@ -22,6 +22,7 @@ const App = () => {
     clearedBalance: {currency: 'placeholder', minorUnits: 'placeholder'},
     pendingTransactions: {currency: 'placeholder', minorUnits: 'placeholder'}
   })
+  const [feed,setFeed] = useState([])
 
 
   // FETCHING API DATA
@@ -80,7 +81,8 @@ const App = () => {
     });
     const accountsFeedData = await response.json();
 
-    console.log(accountsFeedData)
+    setFeed(accountsFeedData.feedItems);
+    console.log(accountsFeedData.feedItems[0]);
   };
 
   // const getAccountsFeedAPI = async () => {
@@ -102,7 +104,7 @@ const App = () => {
     getAccountsIdentifiersAPI();
     getAccountsBalanceAPI();
     getAccountsFeedAPI();
-    // console.log(moment().format());
+    // console.log(feed);
   }, []);
 
   return (
@@ -122,6 +124,11 @@ const App = () => {
         <h2>Available Balance: { centsToDollars(balance.amount.minorUnits)} {balance.amount.currency}</h2>
         <h2>Cleared Balance: { centsToDollars(balance.clearedBalance.minorUnits)} {balance.clearedBalance.currency}</h2>
         <h2>Pending Balance: { centsToDollars(balance.pendingTransactions.minorUnits)} {balance.pendingTransactions.currency}</h2>
+      </div>
+
+      <div>
+        <h1>Feed</h1>
+        <h2>Transaction: { feed}</h2>
       </div>
 
 
