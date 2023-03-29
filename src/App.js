@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { findRenderedDOMComponentWithClass } from "react-dom/test-utils";
 import getAccountsAPI from "./APIMethods"
 import moment from 'moment';
-
+import './App.css'
 
 const App = () => {
 
@@ -12,27 +12,14 @@ const App = () => {
 
   const [accountUid, setAccountUid] = useState([])
 
+  // GETTING DATES
   const moment = require('moment-timezone');
   const now = moment.tz('Europe/London'); // get the current time in London time zone
   const formattedDate = now.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
 
-  const getAccountsAPI = async () => {
-    const response = await fetch('/api/v2/accounts', {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
-      },
-    });
-    const accountsData = await response.json();
-    
-
-    const accountUid = accountsData.accounts[0].accountUid;
-    setAccountUid(accountUid);
-    return accountUid; 
-  };
-
+  // FETCHING API DATA
   const getAccountsIdentifiersAPI = async () => {
-    const accountUid = await getAccountsAPI();
+    const accountUid = await getAccountsAPI(setAccountUid);
     const response = await fetch(`/api/v2/accounts/${accountUid}/identifiers`, {
       method: "GET",
       headers: {
@@ -73,13 +60,14 @@ const App = () => {
 
   useEffect(() => {
     getAccountsIdentifiersAPI();
-    getAccountsFeedAPI();
+    // getAccountsFeedAPI();
     // console.log(moment().format());
   }, []);
 
   return (
     <div className="App">
-      <h1>{ accountUid }</h1>
+      <h1>Account Uid: { accountUid }</h1>
+      <h2>test</h2>
     </div>
   );
 }
