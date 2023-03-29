@@ -12,8 +12,8 @@ const App = () => {
 
   const [accountUid, setAccountUid] = useState([])
 
-  const moment = require('moment');
-  const now = moment.utc(); // get the current time in UTC
+  const moment = require('moment-timezone');
+  const now = moment.tz('Europe/London'); // get the current time in London time zone
   const formattedDate = now.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
 
   const getAccountsAPI = async () => {
@@ -72,7 +72,7 @@ const App = () => {
 
 
   useEffect(() => {
-    // getAccountsIdentifiersAPI();
+    getAccountsIdentifiersAPI();
     getAccountsFeedAPI();
     // console.log(moment().format());
   }, []);
