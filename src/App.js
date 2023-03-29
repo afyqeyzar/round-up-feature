@@ -2,10 +2,13 @@ import { assertTSExternalModuleReference } from "@babel/types";
 import { useEffect, useState } from "react"
 import { findRenderedDOMComponentWithClass } from "react-dom/test-utils";
 import getAccountsAPI from "./APIMethods"
+import moment from 'moment';
+
 
 const App = () => {
 
   // const STATIC_ACCOUNT_UID = 'b47101a3-dce8-48ea-89c5-ccb3ad486caf'
+  const STATIC_CATEGORY_UID = '17b963c6-2665-4599-868f-28e1aa3425a7'
 
   const [accountUid, setAccountUid] = useState([])
 
@@ -50,10 +53,24 @@ const App = () => {
     console.log(accountsBalanceData)
   };
 
+  const getAccountsFeedAPI = async () => {
+    const accountUid = await getAccountsAPI();
+    const response = await fetch(`/api/v2/accounts/${accountUid}/category/${STATIC_CATEGORY_UID}?changesSince=2020-01-01T12%3A34%3A56.000Z`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
+      },
+    });
+    const accountsFeedData = await response.json();
+
+    console.log(accountsFeedData)
+  };
+
 
   useEffect(() => {
-    // getAccountsAPI();
-    getAccountsBalanceAPI();
+    getAccountsIdentifiersAPI();
+    // getAccountsFeedAPI();
+    console.log(moment().format());
   }, []);
 
   return (
