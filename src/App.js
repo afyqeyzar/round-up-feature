@@ -46,7 +46,41 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>Starling Bank Round-up Feature</h1>
+      <div className="header">
+        <h1>Starling Bank Round-up Feature</h1>
+      </div>
+      
+      <div className="second-header">
+        <div>
+          Welcome (name here)
+        </div>
+        <div className="calculator">
+          <div>
+            <div className="date-inputs">
+              <div>Date 1 input</div>
+              <div>to</div>
+              <div>Date 2 input</div>
+            </div>
+            <div>
+              <button>Calculate</button>
+            </div>
+          </div>
+          <div className="sum">
+            <div>Rounded-up Total</div> 
+            <div>{ sum.toFixed(2) } GBP</div>
+          </div>
+          <div>
+            <button>Add to Savings</button>
+          </div>
+        </div>
+      </div>
+
+      <div className="current-balance">
+        <div>Current Account</div>
+        <div>{ centsToDollars(balance.amount.minorUnits)} {balance.amount.currency}</div>
+
+      </div>
+      
       {/* <h1>Account Uid: { accountSpecs.accountUid }</h1>
 
       <div>
@@ -63,11 +97,6 @@ const App = () => {
         <h2>Cleared Balance: { centsToDollars(balance.clearedBalance.minorUnits)} {balance.clearedBalance.currency}</h2>
         <h2>Pending Balance: { centsToDollars(balance.pendingTransactions.minorUnits)} {balance.pendingTransactions.currency}</h2>
       </div> */}
-
-      <div>
-        <h1>Available Rounded-up Savings</h1>
-        <h2>{ sum }</h2>
-      </div>
 
     </div>
   );
