@@ -1,7 +1,7 @@
 import { assertTSExternalModuleReference } from "@babel/types";
 import { useEffect, useState } from "react"
 import { findRenderedDOMComponentWithClass } from "react-dom/test-utils";
-import getAccountsAPI from "./APIMethods"
+// import getAccountsAPI from "./APIMethods"
 import moment from 'moment';
 import './App.css'
 
@@ -13,9 +13,9 @@ function centsToDollars(cents) {
 const App = () => {
 
   // const STATIC_ACCOUNT_UID = 'b47101a3-dce8-48ea-89c5-ccb3ad486caf'
-  const STATIC_CATEGORY_UID = '17b963c6-2665-4599-868f-28e1aa3425a7'
+  // const STATIC_CATEGORY_UID = '17b963c6-2665-4599-868f-28e1aa3425a7'
 
-  const [accountUid, setAccountUid] = useState([])
+  const [accountSpecs, setAccountSpecs] = useState([])
   const [identifiers, setIdentifiers] = useState([])
   const [balance, setBalance] = useState({
     amount: {currency: 'placeholder', minorUnits: 'placeholder'},
@@ -23,15 +23,28 @@ const App = () => {
     pendingTransactions: {currency: 'placeholder', minorUnits: 'placeholder'}
   })
 
-  // GETTING DATES
-  const moment = require('moment-timezone');
-  const now = moment.tz('Europe/London'); // get the current time in London time zone
-  const formattedDate = now.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
 
   // FETCHING API DATA
+
+  const getAccountsAPI = async () => {
+    const response = await fetch('/api/v2/accounts', {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
+      },
+    });
+    const accountsData = await response.json();
+    
+  
+    const accountsSpecs = accountsData.accounts[0];
+    setAccountSpecs(accountsSpecs);
+    // console.log(accountsSpecs)
+    return accountsSpecs; 
+  };
+
   const getAccountsIdentifiersAPI = async () => {
-    const accountUid = await getAccountsAPI(setAccountUid);
-    const response = await fetch(`/api/v2/accounts/${accountUid}/identifiers`, {
+    const accountSpecs = await getAccountsAPI();
+    const response = await fetch(`/api/v2/accounts/${accountSpecs.accountUid}/identifiers`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
@@ -44,8 +57,8 @@ const App = () => {
   };
 
   const getAccountsBalanceAPI = async () => {
-    const accountUid = await getAccountsAPI(setAccountUid);
-    const response = await fetch(`/api/v2/accounts/${accountUid}/balance`, {
+    const accountSpecs = await getAccountsAPI();
+    const response = await fetch(`/api/v2/accounts/${accountSpecs.accountUid}/balance`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
@@ -54,12 +67,12 @@ const App = () => {
     const accountsBalanceData = await response.json();
 
     setBalance(accountsBalanceData);
-    console.log(accountsBalanceData.clearedBalance)
+    // console.log(accountsBalanceData.clearedBalance)
   };
 
   const getAccountsFeedAPI = async () => {
-    const accountUid = await getAccountsAPI();
-    const response = await fetch(`/api/v2/accounts/${accountUid}/category/${STATIC_CATEGORY_UID}?changesSince=${formattedDate}`, {
+    const accountSpecs = await getAccountsAPI();
+    const response = await fetch(`/api/v2/feed/account/${accountSpecs.accountUid}/category/${accountSpecs.defaultCategory}?changesSince=${accountSpecs.createdAt}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
@@ -70,17 +83,31 @@ const App = () => {
     console.log(accountsFeedData)
   };
 
+  // const getAccountsFeedAPI = async () => {
+  //   const accountSpecs = await getAccountsAPI();
+  //   const response = await fetch(`/api/v2/feed/account/${accountSpecs.accountUid}/category/${accountSpecs.defaultCategory}/transactions-between?minTransactionTimestamp=${accountSpecs.createdAt}&maxTransactionTimestamp=2023-03-29T18:21:22.945Z`, {
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
+  //     },
+  //   });
+  //   const accountsFeedData = await response.json();
+
+  //   console.log(accountsFeedData)
+  // };
+
+
 
   useEffect(() => {
     getAccountsIdentifiersAPI();
     getAccountsBalanceAPI();
-    // getAccountsFeedAPI();
+    getAccountsFeedAPI();
     // console.log(moment().format());
   }, []);
 
   return (
     <div className="App">
-      <h1>Account Uid: { accountUid }</h1>
+      <h1>Account Uid: { accountSpecs.accountUid }</h1>
 
       <div>
         <h1>Account Info</h1>
