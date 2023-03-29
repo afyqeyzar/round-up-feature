@@ -1,7 +1,7 @@
 import { assertTSExternalModuleReference } from "@babel/types";
 import { useEffect, useState } from "react"
 import { findRenderedDOMComponentWithClass } from "react-dom/test-utils";
-// import getAccountsAPI from "./APIMethods"
+import { getAccountsBalanceAPI, getAccountsIdentifiersAPI, getAccountsFeedAPI }from "./APIMethods"
 import moment from 'moment';
 import './App.css'
 import sumDifferences from "./RoundUpMethod";
@@ -26,96 +26,18 @@ const App = () => {
   const [feed,setFeed] = useState([]);
   const [feedAmount,setFeedAmount] = useState([]);
 
-
-  // FETCHING API DATA
-
-  const getAccountsAPI = async () => {
-    const response = await fetch('/api/v2/accounts', {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
-      },
-    });
-    const accountsData = await response.json();
-    
-  
-    const accountsSpecs = accountsData.accounts[0];
-    setAccountSpecs(accountsSpecs);
-    // console.log(accountsSpecs)
-    return accountsSpecs; 
-  };
-
-  const getAccountsIdentifiersAPI = async () => {
-    const accountSpecs = await getAccountsAPI();
-    const response = await fetch(`/api/v2/accounts/${accountSpecs.accountUid}/identifiers`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
-      },
-    });
-    const accountsIdentifiersData = await response.json();
-
-    setIdentifiers(accountsIdentifiersData)
-    // console.log(accountsIdentifiersData)
-  };
-
-  const getAccountsBalanceAPI = async () => {
-    const accountSpecs = await getAccountsAPI();
-    const response = await fetch(`/api/v2/accounts/${accountSpecs.accountUid}/balance`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
-      },
-    });
-    const accountsBalanceData = await response.json();
-
-    setBalance(accountsBalanceData);
-    // console.log(accountsBalanceData.clearedBalance)
-  };
-
-  const getAccountsFeedAPI = async () => {
-    const accountSpecs = await getAccountsAPI();
-    const response = await fetch(`/api/v2/feed/account/${accountSpecs.accountUid}/category/${accountSpecs.defaultCategory}?changesSince=${accountSpecs.createdAt}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
-      },
-    });
-    const accountsFeedData = await response.json();
-
-    setFeed(accountsFeedData.feedItems);
-    setFeedAmount(accountsFeedData.feedItems.amount);
-    return accountsFeedData.feedItems;
-    // console.log(accountsFeedData.feedItems[0]);
-  };
-
-  const getSum = async () => {
-    const accountsFeedData = await getAccountsFeedAPI();
+  const getSum = async (setAccountSpecs, setFeed, setFeedAmount) => {
+    const accountsFeedData = await getAccountsFeedAPI(setAccountSpecs, setFeed, setFeedAmount);
     const sum = sumDifferences(accountsFeedData);
     // console.log(accountsFeedData)
     // console.log(sum)
   }
 
-  // const getAccountsFeedAPI = async () => {
-  //   const accountSpecs = await getAccountsAPI();
-  //   const response = await fetch(`/api/v2/feed/account/${accountSpecs.accountUid}/category/${accountSpecs.defaultCategory}/transactions-between?minTransactionTimestamp=${accountSpecs.createdAt}&maxTransactionTimestamp=2023-03-29T18:21:22.945Z`, {
-  //     method: "GET",
-  //     headers: {
-  //       Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
-  //     },
-  //   });
-  //   const accountsFeedData = await response.json();
-
-  //   console.log(accountsFeedData)
-  // };
-
-
-
   useEffect(() => {
-    getAccountsIdentifiersAPI();
-    getAccountsBalanceAPI();
+    getAccountsIdentifiersAPI(setAccountSpecs,setIdentifiers);
+    getAccountsBalanceAPI(setAccountSpecs,setBalance);
     // getAccountsFeedAPI();
-    getSum();
+    getSum(setAccountSpecs, setFeed, setFeedAmount);
 
     // console.log(feed);
   }, []);
