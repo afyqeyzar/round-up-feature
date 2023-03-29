@@ -4,6 +4,7 @@ import { findRenderedDOMComponentWithClass } from "react-dom/test-utils";
 // import getAccountsAPI from "./APIMethods"
 import moment from 'moment';
 import './App.css'
+import sumDifferences from "./RoundUpMethod";
 
 function centsToDollars(cents) {
   const dollars = (cents / 100).toFixed(2);
@@ -22,7 +23,8 @@ const App = () => {
     clearedBalance: {currency: 'placeholder', minorUnits: 'placeholder'},
     pendingTransactions: {currency: 'placeholder', minorUnits: 'placeholder'}
   })
-  const [feed,setFeed] = useState([])
+  const [feed,setFeed] = useState([]);
+  const [feedAmount,setFeedAmount] = useState([]);
 
 
   // FETCHING API DATA
@@ -82,8 +84,17 @@ const App = () => {
     const accountsFeedData = await response.json();
 
     setFeed(accountsFeedData.feedItems);
-    console.log(accountsFeedData.feedItems[0]);
+    setFeedAmount(accountsFeedData.feedItems.amount);
+    return accountsFeedData.feedItems;
+    // console.log(accountsFeedData.feedItems[0]);
   };
+
+  const getSum = async () => {
+    const accountsFeedData = await getAccountsFeedAPI();
+    const sum = sumDifferences(accountsFeedData);
+    // console.log(accountsFeedData)
+    // console.log(sum)
+  }
 
   // const getAccountsFeedAPI = async () => {
   //   const accountSpecs = await getAccountsAPI();
@@ -103,7 +114,9 @@ const App = () => {
   useEffect(() => {
     getAccountsIdentifiersAPI();
     getAccountsBalanceAPI();
-    getAccountsFeedAPI();
+    // getAccountsFeedAPI();
+    getSum();
+
     // console.log(feed);
   }, []);
 
@@ -125,12 +138,6 @@ const App = () => {
         <h2>Cleared Balance: { centsToDollars(balance.clearedBalance.minorUnits)} {balance.clearedBalance.currency}</h2>
         <h2>Pending Balance: { centsToDollars(balance.pendingTransactions.minorUnits)} {balance.pendingTransactions.currency}</h2>
       </div>
-
-      <div>
-        <h1>Feed</h1>
-        <h2>Transaction: { feed}</h2>
-      </div>
-
 
     </div>
   );
