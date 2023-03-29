@@ -12,6 +12,10 @@ const App = () => {
 
   const [accountUid, setAccountUid] = useState([])
 
+  const moment = require('moment');
+  const now = moment.utc(); // get the current time in UTC
+  const formattedDate = now.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+
   const getAccountsAPI = async () => {
     const response = await fetch('/api/v2/accounts', {
       method: "GET",
@@ -55,7 +59,7 @@ const App = () => {
 
   const getAccountsFeedAPI = async () => {
     const accountUid = await getAccountsAPI();
-    const response = await fetch(`/api/v2/accounts/${accountUid}/category/${STATIC_CATEGORY_UID}?changesSince=2020-01-01T12%3A34%3A56.000Z`, {
+    const response = await fetch(`/api/v2/accounts/${accountUid}/category/${STATIC_CATEGORY_UID}?changesSince=${formattedDate}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
@@ -68,9 +72,9 @@ const App = () => {
 
 
   useEffect(() => {
-    getAccountsIdentifiersAPI();
-    // getAccountsFeedAPI();
-    console.log(moment().format());
+    // getAccountsIdentifiersAPI();
+    getAccountsFeedAPI();
+    // console.log(moment().format());
   }, []);
 
   return (
