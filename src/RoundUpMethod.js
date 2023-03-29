@@ -22,7 +22,7 @@ const sumDifferences = (dataArray) => {
     sum += parseFloat(getRoundUpDifference(data));
   }
 
-  console.log(sum)
+  // console.log(sum)
   return sum
 }
 

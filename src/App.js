@@ -25,10 +25,12 @@ const App = () => {
   })
   const [feed,setFeed] = useState([]);
   const [feedAmount,setFeedAmount] = useState([]);
+  const [sum, setSum] = useState(0);
 
   const getSum = async (setAccountSpecs, setFeed, setFeedAmount) => {
     const accountsFeedData = await getAccountsFeedAPI(setAccountSpecs, setFeed, setFeedAmount);
     const sum = sumDifferences(accountsFeedData);
+    setSum(sum)
     // console.log(accountsFeedData)
     // console.log(sum)
   }
@@ -44,7 +46,8 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>Account Uid: { accountSpecs.accountUid }</h1>
+      <h1>Starling Bank Round-up Feature</h1>
+      {/* <h1>Account Uid: { accountSpecs.accountUid }</h1>
 
       <div>
         <h1>Account Info</h1>
@@ -59,6 +62,11 @@ const App = () => {
         <h2>Available Balance: { centsToDollars(balance.amount.minorUnits)} {balance.amount.currency}</h2>
         <h2>Cleared Balance: { centsToDollars(balance.clearedBalance.minorUnits)} {balance.clearedBalance.currency}</h2>
         <h2>Pending Balance: { centsToDollars(balance.pendingTransactions.minorUnits)} {balance.pendingTransactions.currency}</h2>
+      </div> */}
+
+      <div>
+        <h1>Available Rounded-up Savings</h1>
+        <h2>{ sum }</h2>
       </div>
 
     </div>
