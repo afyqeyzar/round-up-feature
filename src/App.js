@@ -31,7 +31,7 @@ const App = () => {
   const [feed,setFeed] = useState([]);
   const [feedAmount,setFeedAmount] = useState([]);
   const [sum, setSum] = useState(0);
-  const [startDate, setStartDate] = useState(new Date("2023-01-01T12:34:56.000Z"));
+  const [startDate, setStartDate] = useState(new Date("2023-03-27T12:34:56.000Z"));
   
 
   const getSum = async (setAccountSpecs, setFeed, setFeedAmount, startDate, endDate) => {
