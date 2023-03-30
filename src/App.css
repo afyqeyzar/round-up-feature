@@ -44,3 +44,13 @@ div{
 .current-balance{
   text-align: left;
 }
+
+.savings-balance{
+  text-align: left;
+}
+
+.sumbox{
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+}

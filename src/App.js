@@ -1,7 +1,7 @@
 import { assertTSExternalModuleReference } from "@babel/types";
 import { useEffect, useState } from "react"
 import { findRenderedDOMComponentWithClass } from "react-dom/test-utils";
-import { getAccountsBalanceAPI, getAccountsIdentifiersAPI, getAccountsFeedAPI }from "./APIMethods"
+import { getAccountsBalanceAPI, getAccountsIdentifiersAPI, getAccountsFeedAPI, getAccountsDetails }from "./APIMethods"
 import moment from 'moment';
 import './App.css'
 import sumDifferences from "./RoundUpMethod";
@@ -18,6 +18,7 @@ const App = () => {
   // const STATIC_CATEGORY_UID = '17b963c6-2665-4599-868f-28e1aa3425a7'
 
   const [accountSpecs, setAccountSpecs] = useState([])
+  const [accountDetails, setAccountDetails] = useState([])
   const [identifiers, setIdentifiers] = useState([])
   const [balance, setBalance] = useState({
     amount: {currency: 'placeholder', minorUnits: 'placeholder'},
@@ -39,6 +40,7 @@ const App = () => {
   useEffect(() => {
     getAccountsIdentifiersAPI(setAccountSpecs,setIdentifiers);
     getAccountsBalanceAPI(setAccountSpecs,setBalance);
+    getAccountsDetails(setAccountDetails);
     // getAccountsFeedAPI();
     getSum(setAccountSpecs, setFeed, setFeedAmount);
 
@@ -54,7 +56,7 @@ const App = () => {
       
       <div className="second-header">
         <div>
-          Welcome (name here)
+          <h2> Welcome { accountDetails.title } { accountDetails.firstName } { accountDetails.lastName } </h2>
         </div>
         <div className="calculator">
           <div>
@@ -63,16 +65,19 @@ const App = () => {
               <div>to</div>
               <div>Date 2 input</div>
             </div>
+
             <div>
               <button>Calculate</button>
             </div>
           </div>
-          <div className="sum">
-            <div>Rounded-up Total</div> 
-            <div>{ sum.toFixed(2) } GBP</div>
-          </div>
-          <div>
-            <button>Add to Savings</button>
+          <div className="sumbox">
+            <div className="sum">
+              <div>Rounded-up Total</div> 
+              <div>{ sum.toFixed(2) } GBP</div>
+            </div>
+            <div>
+              <button>Add to Savings</button>
+            </div>
           </div>
         </div>
       </div>
@@ -94,7 +99,7 @@ const App = () => {
           {/* <DisplayTransaction Uid = '69'/> */}
           {feed.map((feed) => {
             // console.log(typeof feed.feedItemUid)
-            return <DisplayTransaction Uid = {feed.feedItemUid} />
+            return <DisplayTransaction counterPartyName = {feed.counterPartyName} direction = {feed.direction} status = {feed.status} amount = {centsToDollars(feed.amount.minorUnits)}/>
           })}
         </div>
       </div>
