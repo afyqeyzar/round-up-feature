@@ -40,39 +40,40 @@ const App = () => {
       
       <div className="header">
         <h1>Starling Bank Round-up Feature</h1>
-      </div>
-      
-      <div className="second-header">
         <div>
           <h2> Welcome { accountDetails.title } { accountDetails.firstName } { accountDetails.lastName } </h2>
         </div>
-        <div className="calculator">
-          <div>
-            <div className="date-inputs">
-              <div>{ PickDate(startDate, setStartDate) }</div>
-              <div>to</div>
-              <div>{ readableDateFormat(addSevenDays(startDate))}</div>
-            </div>
-
-            <div>
-              <button onClick={ () => {calculateButton(setFeed, startDate, setSum, setBalance, setAccountSpecs, setSavingsGoal)} }>Calculate</button>
-            </div>
+      </div>
+      
+      
+      <div className="calculator">
+        <div>
+          <div className="date-inputs">
+            <div>{ PickDate(startDate, setStartDate) }</div>
+            <div><h3>to</h3></div>
+            <div><p className="end-date">{ readableDateFormat(addSevenDays(startDate))}</p></div>
           </div>
-          <div className="sumbox">
-            <div className="sum">
-              <div>Rounded-up Total</div> 
-              <div>{ sum.toFixed(2) } GBP</div>
-            </div>
 
-            <div>
-              <button onClick={ () => {transferButton(accountSpecs, savingsGoal, sum, setSum, setBalance, setAccountSpecs, setSavingsGoal)} }>Add to Savings</button>
-            </div>
+          <div>
+            <button className="button" onClick={ () => {calculateButton(setFeed, startDate, setSum, setBalance, setAccountSpecs, setSavingsGoal)} }>Calculate</button>
+          </div>
+        </div>
+
+        <div className="sumbox">
+          <div className="total">Rounded-up Total</div>
+          <div className="sum">
+            <div>{ sum.toFixed(2) } GBP</div>
+          </div>
+
+          <div>
+            <button className="button" onClick={ () => {transferButton(accountSpecs, savingsGoal, sum, setSum, setBalance, setAccountSpecs, setSavingsGoal)} }>Add to Savings</button>
           </div>
         </div>
       </div>
+      
 
       <div className="current-balance">
-        <div><h2>Current Account</h2></div>
+        <div className="title">Current Account</div>
 
         <DisplayAccountBalance 
           name = { accountSpecs.name } 
@@ -84,7 +85,7 @@ const App = () => {
       </div>
 
       <div className="savings-balance">
-        <div><h2>Savings</h2></div>
+        <div className="title">Savings</div>
 
           <DisplaySavingsBalance 
             name = { savingsGoal.name } 
@@ -99,7 +100,7 @@ const App = () => {
       {/* <button onClick={makeSavingsGoal}>Make Savings Goal</button> */}
       
       <div className="transactions">
-        <div><h2>Transactions</h2></div>
+        <div className="title">Transactions</div>
         <div>
           {feed.map((feed) => {
             // console.log(typeof feed.feedItemUid)

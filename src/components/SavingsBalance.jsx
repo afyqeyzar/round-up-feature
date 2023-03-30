@@ -4,9 +4,12 @@ const DisplaySavingsBalance = (props) => {
 
   return (
     <div>
-      <div>Name: { props.name}</div>
-      <div>Target: { props.targetMinorUnits} { props.targetCurrency}</div>
-      <div>Total Saved: { props.totalSavedMinorUnits} { props.totalSavedCurrency}</div>
+      <div className="savings-amounts">
+        <div className="amount">{ props.totalSavedMinorUnits} { props.totalSavedCurrency} </div>
+        <div className="target">/ { props.targetMinorUnits} { props.targetCurrency}</div>
+      </div>
+      <div className="name"> { props.name}</div>
+       
     </div>
   );
 }

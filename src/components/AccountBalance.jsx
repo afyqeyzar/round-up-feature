@@ -4,9 +4,9 @@ const DisplayAccountBalance = (props) => {
 
   return (
     <div>
-      <div>Name: { props.name}</div>
-      <div>Type: { props.accountType}</div>
-      <div>Total Amount: { props.minorUnits } {props.currency}</div>
+      <div>{ props.accountType}</div>
+      <div className="amount">{ props.minorUnits } {props.currency}</div>
+      <div>{ props.name}</div>
     </div>
   );
 }

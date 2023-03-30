@@ -6,6 +6,7 @@ const PickDate = (startDate, setStartDate) => {
   // console.log(formatDate(startDate));
   return (
     <DatePicker 
+      className="begin-date"
       dateFormat="dd/MM/yyyy"
       selected={startDate} 
       onChange={(date) => setStartDate(date)} 
