@@ -1,7 +1,7 @@
 import { assertTSExternalModuleReference } from "@babel/types";
 import { useEffect, useState } from "react"
 import { findRenderedDOMComponentWithClass } from "react-dom/test-utils";
-import { getAccountsBalanceAPI, getAccountsIdentifiersAPI, getAccountsFeedAPI, getAccountsDetails, getAccountsFeedRangedAPI }from "./APIMethods"
+import { getAccountsBalanceAPI, getAccountsDetails, getAccountsFeedRangedAPI, getSavingsGoal }from "./APIMethods"
 import moment from 'moment';
 import './App.css'
 import sumDifferences from "./RoundUpMethod";
@@ -37,18 +37,7 @@ const App = () => {
   const [startDate, setStartDate] = useState(new Date("2023-03-27T12:34:56.000Z"));
 
 
-  const getSavingsGoal = async () => {
-    const response = await fetch(`/api/v2/account/${accountSpecs.accountUid}/spaces`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
-      },
-    });
-    const accountsData = await response.json();
-    
-    setSavingsGoal(accountsData.savingsGoals[0])
-    console.log(accountsData.savingsGoals[0])
-  };
+ 
   
   
 
@@ -68,10 +57,14 @@ const App = () => {
     );
   };
 
-  useEffect(() => {
+  const loadPage = async () => {
     getAccountsBalanceAPI(setAccountSpecs,setBalance);
     getAccountsDetails(setAccountDetails);
-    getSavingsGoal();
+    getSavingsGoal(setAccountSpecs, setSavingsGoal);
+  }
+
+  useEffect(() => {
+    loadPage()
   }, []);
 
   return (

@@ -32,6 +32,20 @@ const getAccountsDetails = async (setAccountDetails) => {
   // return accountsSpecs; 
 };
 
+const getSavingsGoal = async (setAccountSpecs, setSavingsGoal) => {
+  const accountSpecs = await getAccountsAPI(setAccountSpecs);
+  const response = await fetch(`/api/v2/account/${accountSpecs.accountUid}/spaces`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
+    },
+  });
+  const accountsData = await response.json();
+  
+  setSavingsGoal(accountsData.savingsGoals[0])
+  console.log(accountsData.savingsGoals[0])
+};
+
 const getAccountsIdentifiersAPI = async (setAccountSpecs, setIdentifiers) => {
   const accountSpecs = await getAccountsAPI(setAccountSpecs);
   const response = await fetch(`/api/v2/accounts/${accountSpecs.accountUid}/identifiers`, {
@@ -97,7 +111,7 @@ const getAccountsFeedRangedAPI = async (setAccountSpecs, setFeed, setFeedAmount,
 
 
 
-export {getAccountsBalanceAPI, getAccountsFeedAPI, getAccountsIdentifiersAPI, getAccountsDetails, getAccountsFeedRangedAPI}
+export {getAccountsBalanceAPI, getAccountsFeedAPI, getAccountsDetails, getAccountsFeedRangedAPI, getSavingsGoal}
 
 
 
