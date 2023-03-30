@@ -18,7 +18,7 @@ const sumDifferences = (dataArray) => {
   // console.log(typeof sum);
 
   for (const data of dataArray){
-    console.log(getRoundUpDifference(data));
+    // console.log(getRoundUpDifference(data));
     sum += parseFloat(getRoundUpDifference(data));
   }
 

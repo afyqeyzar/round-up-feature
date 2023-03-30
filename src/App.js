@@ -22,16 +22,34 @@ const App = () => {
 
   const [accountSpecs, setAccountSpecs] = useState([])
   const [accountDetails, setAccountDetails] = useState([])
-  const [identifiers, setIdentifiers] = useState([])
   const [balance, setBalance] = useState({
     amount: {currency: 'placeholder', minorUnits: 'placeholder'},
     clearedBalance: {currency: 'placeholder', minorUnits: 'placeholder'},
     pendingTransactions: {currency: 'placeholder', minorUnits: 'placeholder'}
   })
+  const [savingsGoal,setSavingsGoal] = useState({
+    target: {currency: 'placeholder', minorUnits: 'placeholder'},
+    totalSaved: {currency: 'placeholder', minorUnits: 'placeholder'}
+  });
   const [feed,setFeed] = useState([]);
   const [feedAmount,setFeedAmount] = useState([]);
   const [sum, setSum] = useState(0);
   const [startDate, setStartDate] = useState(new Date("2023-03-27T12:34:56.000Z"));
+
+
+  const getSavingsGoal = async () => {
+    const response = await fetch(`/api/v2/account/${accountSpecs.accountUid}/spaces`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
+      },
+    });
+    const accountsData = await response.json();
+    
+    setSavingsGoal(accountsData.savingsGoals[0])
+    console.log(accountsData.savingsGoals[0])
+  };
+  
   
 
   const getSum = async (setAccountSpecs, setFeed, setFeedAmount, startDate, endDate) => {
@@ -51,14 +69,9 @@ const App = () => {
   };
 
   useEffect(() => {
-    getAccountsIdentifiersAPI(setAccountSpecs,setIdentifiers);
     getAccountsBalanceAPI(setAccountSpecs,setBalance);
     getAccountsDetails(setAccountDetails);
-    // getAccountsFeedAPI();
-    // console.log(formatDate(startDate))
-    // getSum(setAccountSpecs, setFeed, setFeedAmount, formatDate(startDate));
-    // console.log(startDate)
-    // console.log(feed);
+    getSavingsGoal();
   }, []);
 
   return (
@@ -97,20 +110,21 @@ const App = () => {
       </div>
 
       <div className="current-balance">
-        <div>Current Account</div>
+        <div><h2>Current Account</h2></div>
         <div>{ centsToDollars(balance.amount.minorUnits)} {balance.amount.currency}</div>
 
       </div>
 
       <div className="savings-balance">
-        <div>Savings</div>
-        <div>amount goes here</div>
+        <div><h2>Savings</h2></div>
+        <div>Name: { savingsGoal.name}</div>
+        <div>Target: { centsToDollars(savingsGoal.target.minorUnits)} { savingsGoal.target.currency}</div>
+        <div>Total Saved: { centsToDollars(savingsGoal.totalSaved.minorUnits)} { savingsGoal.target.currency}</div>
       </div>
       
       <div className="transactions">
         <div>Transactions</div>
         <div>
-          {/* <DisplayTransaction Uid = '69'/> */}
           {feed.map((feed) => {
             // console.log(typeof feed.feedItemUid)
             return <DisplayTransaction counterPartyName = {feed.counterPartyName} direction = {feed.direction} status = {feed.status} amount = {centsToDollars(feed.amount.minorUnits)}/>
