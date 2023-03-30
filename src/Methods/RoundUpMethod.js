@@ -1,3 +1,5 @@
+import { getAccountsFeedRangedAPI } from "./APIMethods";
+
 function centsToDollars(cents) {
   const dollars = (cents / 100).toFixed(2);
   return dollars;
@@ -26,5 +28,11 @@ const sumDifferences = (dataArray) => {
   return sum
 }
 
+const getSum = async (setFeed, startDate, endDate, setSum) => {
+  const accountsFeedData = await getAccountsFeedRangedAPI(setFeed, startDate, endDate);
+  const sum = sumDifferences(accountsFeedData);
+  setSum(sum);
+}
 
-export default sumDifferences
+
+export default getSum;
