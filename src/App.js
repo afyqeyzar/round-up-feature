@@ -1,15 +1,14 @@
-import { assertTSExternalModuleReference } from "@babel/types";
 import { useEffect, useState } from "react"
-import { findRenderedDOMComponentWithClass } from "react-dom/test-utils";
-import { getAccountsBalanceAPI, getAccountsDetails, getAccountsFeedRangedAPI, getSavingsGoal }from "./APIMethods"
-import moment from 'moment';
+import { getAccountsBalanceAPI, getAccountsDetails, getAccountsFeedRangedAPI, getSavingsGoal, getAccountsAPI }from "./Methods/APIMethods"
 import './App.css'
-import sumDifferences from "./RoundUpMethod";
-import DisplayTransaction from "./Transaction"
+import sumDifferences from "./Methods/RoundUpMethod";
+import DisplayTransaction from "./components/Transaction"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"
-import { apiDateFormat, readableDateFormat, addSevenDays } from "./DateMethod";
+import { apiDateFormat, readableDateFormat, addSevenDays } from "./Methods/DateMethod";
 import {v4 as uuidv4} from 'uuid';
+import DisplayAccountBalance from "./components/AccountBalance";
+import DisplaySavingsBalance from "./components/SavingsBalance";
 
 function centsToDollars(cents) {
   const dollars = (cents / 100).toFixed(2);
@@ -61,6 +60,32 @@ const App = () => {
     );
   };
 
+  const savingGoal = {
+    "name": "Trip to Paris",
+    "currency": "GBP",
+    "target": {
+      "currency": "GBP",
+      "minorUnits": 123456
+    },
+    "base64EncodedPhoto": "string"
+  }
+
+  const makeSavingsGoal = async () => {
+    const accountSpecs = await getAccountsAPI();
+    const response = await fetch(`/api/v2/account/${accountSpecs.accountUid}/savings-goals`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(savingGoal)
+    });
+    const accountsDetailsData = await response.json();
+    
+    console.log(accountsDetailsData)
+    
+  }
+
   const loadBalances = async () => {
     getAccountsBalanceAPI(setBalance);
     getSavingsGoal(setAccountSpecs, setSavingsGoal);
@@ -69,6 +94,7 @@ const App = () => {
   const calculateButton = () => {
     getSum(setFeed, apiDateFormat(startDate), apiDateFormat(addSevenDays(startDate)))
     loadBalances()
+    console.log(typeof accountSpecs)
   }
 
   const transferButton = () => {
@@ -102,9 +128,12 @@ const App = () => {
     // console.log(accountsDetailsData)
     
   }
+
+
   useEffect(() => {
     getAccountsDetails(setAccountDetails);
-    loadBalances()
+    loadBalances();
+    // makeSavingsGoal()
   }, []);
 
   return (
@@ -144,17 +173,26 @@ const App = () => {
 
       <div className="current-balance">
         <div><h2>Current Account</h2></div>
-        <div>Name: { accountSpecs.name}</div>
-        <div>Type: { accountSpecs.accountType}</div>
-        <div>Total Amount: { centsToDollars(balance.amount.minorUnits)} {balance.amount.currency}</div>
+
+        <DisplayAccountBalance 
+          name = { accountSpecs.name } 
+          accountType = { accountSpecs.accountType } 
+          minorUnits = {centsToDollars(balance.amount.minorUnits)} 
+          currency = {balance.amount.currency}
+        />
 
       </div>
 
       <div className="savings-balance">
         <div><h2>Savings</h2></div>
-        <div>Name: { savingsGoal.name}</div>
-        <div>Target: { centsToDollars(savingsGoal.target.minorUnits)} { savingsGoal.target.currency}</div>
-        <div>Total Saved: { centsToDollars(savingsGoal.totalSaved.minorUnits)} { savingsGoal.target.currency}</div>
+
+        <DisplaySavingsBalance 
+          name = { savingsGoal.name } 
+          targetMinorUnits = { centsToDollars(savingsGoal.target.minorUnits) }
+          targetCurrency = { savingsGoal.target.currency }
+          totalSavedMinorUnits = { centsToDollars(savingsGoal.totalSaved.minorUnits) }
+          totalSavedCurrency = { savingsGoal.totalSaved.currency }
+        />
       </div>
       
       <div className="transactions">

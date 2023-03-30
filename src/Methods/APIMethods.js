@@ -43,7 +43,7 @@ const getSavingsGoal = async (setAccountSpecs, setSavingsGoal) => {
   const accountsData = await response.json();
   setAccountSpecs(accountSpecs);
   setSavingsGoal(accountsData.savingsGoals[0]);
-  // console.log(accountSpecs)
+  console.log(accountsData)
 };
 
 const getAccountsIdentifiersAPI = async (setIdentifiers) => {
@@ -74,23 +74,6 @@ const getAccountsBalanceAPI = async (setBalance) => {
   // console.log(accountsBalanceData.clearedBalance)
 };
 
-// const getAccountsFeedAPI = async (setFeed, setFeedAmount, startDate) => {
-//   const accountSpecs = await getAccountsAPI();
-//   const response = await fetch(`/api/v2/feed/account/${accountSpecs.accountUid}/category/${accountSpecs.defaultCategory}?changesSince=${startDate}`, {
-//     method: "GET",
-//     headers: {
-//       Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
-//     },
-//   });
-//   const accountsFeedData = await response.json();
-
-//   setFeed(accountsFeedData.feedItems);
-//   setFeedAmount(accountsFeedData.feedItems.amount);
-//   return accountsFeedData.feedItems;
-//   // console.log(accountsFeedData.feedItems[0]);
-// };
-
-
 const getAccountsFeedRangedAPI = async (setFeed, startDate, endDate) => {
   const accountSpecs = await getAccountsAPI();
 
@@ -111,7 +94,7 @@ const getAccountsFeedRangedAPI = async (setFeed, startDate, endDate) => {
 
 
 
-export {getAccountsBalanceAPI, getAccountsDetails, getAccountsFeedRangedAPI, getSavingsGoal}
+export {getAccountsBalanceAPI, getAccountsDetails, getAccountsFeedRangedAPI, getSavingsGoal, getAccountsAPI}
 
 
 
