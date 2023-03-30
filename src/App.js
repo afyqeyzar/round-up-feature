@@ -53,7 +53,11 @@ const App = () => {
   const PickDate = () => {
     // console.log(formatDate(startDate));
     return (
-      <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
+      <DatePicker 
+        dateFormat="dd/MM/yyyy"
+        selected={startDate} 
+        onChange={(date) => setStartDate(date)} 
+      />
     );
   };
 
