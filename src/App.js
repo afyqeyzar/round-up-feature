@@ -9,11 +9,16 @@ import DisplayTransaction from "./Transaction"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"
 import { apiDateFormat, readableDateFormat, addSevenDays } from "./DateMethod";
+import {v4 as uuidv4} from 'uuid';
 
 function centsToDollars(cents) {
   const dollars = (cents / 100).toFixed(2);
   return dollars;
 }
+
+// const myuuid = uuidv4();
+
+
 
 const App = () => {
 
@@ -57,6 +62,7 @@ const App = () => {
 
   useEffect(() => {
     loadPage()
+    // console.log('Your UUID is: ' + myuuid);
   }, []);
 
   return (
