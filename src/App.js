@@ -5,6 +5,7 @@ import { getAccountsBalanceAPI, getAccountsIdentifiersAPI, getAccountsFeedAPI }f
 import moment from 'moment';
 import './App.css'
 import sumDifferences from "./RoundUpMethod";
+import DisplayTransaction from "./Transaction"
 
 function centsToDollars(cents) {
   const dollars = (cents / 100).toFixed(2);
@@ -31,7 +32,7 @@ const App = () => {
     const accountsFeedData = await getAccountsFeedAPI(setAccountSpecs, setFeed, setFeedAmount);
     const sum = sumDifferences(accountsFeedData);
     setSum(sum)
-    // console.log(accountsFeedData)
+    // console.log(feed[0])
     // console.log(sum)
   }
 
@@ -46,6 +47,7 @@ const App = () => {
 
   return (
     <div className="App">
+      
       <div className="header">
         <h1>Starling Bank Round-up Feature</h1>
       </div>
@@ -79,6 +81,22 @@ const App = () => {
         <div>Current Account</div>
         <div>{ centsToDollars(balance.amount.minorUnits)} {balance.amount.currency}</div>
 
+      </div>
+
+      <div className="savings-balance">
+        <div>Savings</div>
+        <div>amount goes here</div>
+      </div>
+      
+      <div className="transactions">
+        <div>Transactions</div>
+        <div>
+          {/* <DisplayTransaction Uid = '69'/> */}
+          {feed.map((feed) => {
+            // console.log(typeof feed.feedItemUid)
+            return <DisplayTransaction Uid = {feed.feedItemUid} />
+          })}
+        </div>
       </div>
       
       {/* <h1>Account Uid: { accountSpecs.accountUid }</h1>
