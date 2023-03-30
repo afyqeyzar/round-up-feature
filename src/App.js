@@ -10,6 +10,7 @@ import { centsToDollars } from "./Methods/DollarToCentsMethod";
 import PickDate from "./components/PickDate";
 import { calculateButton, transferButton } from "./Methods/ButtonMethods";
 import loadBalances from "./Methods/LoadBalances";
+import makeSavingsGoal from "./Methods/MakeSavingsGoal"
 
 const App = () => {
 
@@ -21,8 +22,9 @@ const App = () => {
     pendingTransactions: {currency: 'placeholder', minorUnits: 'placeholder'}
   });
   const [savingsGoal,setSavingsGoal] = useState({
-    target: {currency: 'placeholder', minorUnits: 'placeholder'},
-    totalSaved: {currency: 'placeholder', minorUnits: 'placeholder'}
+    name: 'N/A',
+    target: {currency: 'N/A', minorUnits: 'N/A'},
+    totalSaved: {currency: 'N/A', minorUnits: 'N/A'}
   });
   const [feed,setFeed] = useState([]);
   const [sum, setSum] = useState(0);
@@ -61,6 +63,7 @@ const App = () => {
               <div>Rounded-up Total</div> 
               <div>{ sum.toFixed(2) } GBP</div>
             </div>
+
             <div>
               <button onClick={ () => {transferButton(accountSpecs, savingsGoal, sum, setSum, setBalance, setAccountSpecs, setSavingsGoal)} }>Add to Savings</button>
             </div>
@@ -83,17 +86,20 @@ const App = () => {
       <div className="savings-balance">
         <div><h2>Savings</h2></div>
 
-        <DisplaySavingsBalance 
-          name = { savingsGoal.name } 
-          targetMinorUnits = { centsToDollars(savingsGoal.target.minorUnits) }
-          targetCurrency = { savingsGoal.target.currency }
-          totalSavedMinorUnits = { centsToDollars(savingsGoal.totalSaved.minorUnits) }
-          totalSavedCurrency = { savingsGoal.totalSaved.currency }
-        />
+          <DisplaySavingsBalance 
+            name = { savingsGoal.name } 
+            targetMinorUnits = { centsToDollars(savingsGoal.target.minorUnits) }
+            targetCurrency = { savingsGoal.target.currency }
+            totalSavedMinorUnits = { centsToDollars(savingsGoal.totalSaved.minorUnits) }
+            totalSavedCurrency = { savingsGoal.totalSaved.currency }
+          />
       </div>
+
+      {/* UNCOMMENT THIS BUTTON TO CREATE A SAVINGS GOAL */}
+      {/* <button onClick={makeSavingsGoal}>Make Savings Goal</button> */}
       
       <div className="transactions">
-        <div>Transactions</div>
+        <div><h2>Transactions</h2></div>
         <div>
           {feed.map((feed) => {
             // console.log(typeof feed.feedItemUid)

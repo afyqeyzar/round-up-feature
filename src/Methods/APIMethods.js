@@ -42,8 +42,13 @@ const getSavingsGoal = async (setAccountSpecs, setSavingsGoal) => {
   });
   const accountsData = await response.json();
   setAccountSpecs(accountSpecs);
-  setSavingsGoal(accountsData.savingsGoals[0]);
-  console.log(accountsData)
+
+  console.log(Object.keys(accountsData).length);
+  if (Object.keys(accountsData).length > 0){
+    setSavingsGoal(accountsData.savingsGoals[0]);
+  }
+
+  // console.log(accountsData)
 };
 
 const getAccountsIdentifiersAPI = async (setIdentifiers) => {
