@@ -19,33 +19,25 @@ const App = () => {
 
   // const STATIC_ACCOUNT_UID = 'b47101a3-dce8-48ea-89c5-ccb3ad486caf'
   // const STATIC_CATEGORY_UID = '17b963c6-2665-4599-868f-28e1aa3425a7'
-
   const [accountSpecs, setAccountSpecs] = useState([])
-  const [accountDetails, setAccountDetails] = useState([])
+  const [accountDetails, setAccountDetails] = useState([]);
   const [balance, setBalance] = useState({
     amount: {currency: 'placeholder', minorUnits: 'placeholder'},
     clearedBalance: {currency: 'placeholder', minorUnits: 'placeholder'},
     pendingTransactions: {currency: 'placeholder', minorUnits: 'placeholder'}
-  })
+  });
   const [savingsGoal,setSavingsGoal] = useState({
     target: {currency: 'placeholder', minorUnits: 'placeholder'},
     totalSaved: {currency: 'placeholder', minorUnits: 'placeholder'}
   });
   const [feed,setFeed] = useState([]);
-  const [feedAmount,setFeedAmount] = useState([]);
   const [sum, setSum] = useState(0);
   const [startDate, setStartDate] = useState(new Date("2023-03-27T12:34:56.000Z"));
 
-
- 
-  
-  
-
-  const getSum = async (setAccountSpecs, setFeed, setFeedAmount, startDate, endDate) => {
-    // const accountsFeedData = await getAccountsFeedAPI(setAccountSpecs, setFeed, setFeedAmount, startDate);
-    const accountsFeedData = await getAccountsFeedRangedAPI(setAccountSpecs, setFeed, setFeedAmount, startDate, endDate);
+  const getSum = async (setFeed, startDate, endDate) => {
+    const accountsFeedData = await getAccountsFeedRangedAPI(setFeed, startDate, endDate);
     const sum = sumDifferences(accountsFeedData);
-    setSum(sum)
+    setSum(sum);
     // console.log(feed[0])
     // console.log(sum)
   }
@@ -58,7 +50,7 @@ const App = () => {
   };
 
   const loadPage = async () => {
-    getAccountsBalanceAPI(setAccountSpecs,setBalance);
+    getAccountsBalanceAPI(setBalance);
     getAccountsDetails(setAccountDetails);
     getSavingsGoal(setAccountSpecs, setSavingsGoal);
   }
@@ -87,7 +79,7 @@ const App = () => {
             </div>
 
             <div>
-              <button onClick={() => {getSum(setAccountSpecs, setFeed, setFeedAmount, apiDateFormat(startDate), apiDateFormat(addSevenDays(startDate)))}}>Calculate</button>
+              <button onClick={() => {getSum(setFeed, apiDateFormat(startDate), apiDateFormat(addSevenDays(startDate)))}}>Calculate</button>
             </div>
           </div>
           <div className="sumbox">
@@ -104,7 +96,9 @@ const App = () => {
 
       <div className="current-balance">
         <div><h2>Current Account</h2></div>
-        <div>{ centsToDollars(balance.amount.minorUnits)} {balance.amount.currency}</div>
+        <div>Name: { accountSpecs.name}</div>
+        <div>Type: { accountSpecs.accountType}</div>
+        <div>Total Amount: { centsToDollars(balance.amount.minorUnits)} {balance.amount.currency}</div>
 
       </div>
 

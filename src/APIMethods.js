@@ -1,6 +1,6 @@
 
 
-const getAccountsAPI = async (setAccountSpecs) => {
+const getAccountsAPI = async () => {
   const response = await fetch('/api/v2/accounts', {
     method: "GET",
     headers: {
@@ -11,7 +11,7 @@ const getAccountsAPI = async (setAccountSpecs) => {
   
 
   const accountsSpecs = accountsData.accounts[0];
-  setAccountSpecs(accountsSpecs);
+  // (accountsSpecs);
   // console.log(accountsSpecs)
   return accountsSpecs; 
 };
@@ -33,7 +33,7 @@ const getAccountsDetails = async (setAccountDetails) => {
 };
 
 const getSavingsGoal = async (setAccountSpecs, setSavingsGoal) => {
-  const accountSpecs = await getAccountsAPI(setAccountSpecs);
+  const accountSpecs = await getAccountsAPI();
   const response = await fetch(`/api/v2/account/${accountSpecs.accountUid}/spaces`, {
     method: "GET",
     headers: {
@@ -41,13 +41,13 @@ const getSavingsGoal = async (setAccountSpecs, setSavingsGoal) => {
     },
   });
   const accountsData = await response.json();
-  
-  setSavingsGoal(accountsData.savingsGoals[0])
-  console.log(accountsData.savingsGoals[0])
+  setAccountSpecs(accountSpecs);
+  setSavingsGoal(accountsData.savingsGoals[0]);
+  console.log(accountSpecs)
 };
 
-const getAccountsIdentifiersAPI = async (setAccountSpecs, setIdentifiers) => {
-  const accountSpecs = await getAccountsAPI(setAccountSpecs);
+const getAccountsIdentifiersAPI = async (setIdentifiers) => {
+  const accountSpecs = await getAccountsAPI();
   const response = await fetch(`/api/v2/accounts/${accountSpecs.accountUid}/identifiers`, {
     method: "GET",
     headers: {
@@ -60,8 +60,8 @@ const getAccountsIdentifiersAPI = async (setAccountSpecs, setIdentifiers) => {
   // console.log(accountsIdentifiersData)
 };
 
-const getAccountsBalanceAPI = async (setAccountSpecs, setBalance) => {
-  const accountSpecs = await getAccountsAPI(setAccountSpecs);
+const getAccountsBalanceAPI = async (setBalance) => {
+  const accountSpecs = await getAccountsAPI();
   const response = await fetch(`/api/v2/accounts/${accountSpecs.accountUid}/balance`, {
     method: "GET",
     headers: {
@@ -74,25 +74,25 @@ const getAccountsBalanceAPI = async (setAccountSpecs, setBalance) => {
   // console.log(accountsBalanceData.clearedBalance)
 };
 
-const getAccountsFeedAPI = async (setAccountSpecs, setFeed, setFeedAmount, startDate) => {
-  const accountSpecs = await getAccountsAPI(setAccountSpecs);
-  const response = await fetch(`/api/v2/feed/account/${accountSpecs.accountUid}/category/${accountSpecs.defaultCategory}?changesSince=${startDate}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
-    },
-  });
-  const accountsFeedData = await response.json();
+// const getAccountsFeedAPI = async (setFeed, setFeedAmount, startDate) => {
+//   const accountSpecs = await getAccountsAPI();
+//   const response = await fetch(`/api/v2/feed/account/${accountSpecs.accountUid}/category/${accountSpecs.defaultCategory}?changesSince=${startDate}`, {
+//     method: "GET",
+//     headers: {
+//       Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
+//     },
+//   });
+//   const accountsFeedData = await response.json();
 
-  setFeed(accountsFeedData.feedItems);
-  setFeedAmount(accountsFeedData.feedItems.amount);
-  return accountsFeedData.feedItems;
-  // console.log(accountsFeedData.feedItems[0]);
-};
+//   setFeed(accountsFeedData.feedItems);
+//   setFeedAmount(accountsFeedData.feedItems.amount);
+//   return accountsFeedData.feedItems;
+//   // console.log(accountsFeedData.feedItems[0]);
+// };
 
 
-const getAccountsFeedRangedAPI = async (setAccountSpecs, setFeed, setFeedAmount, startDate, endDate) => {
-  const accountSpecs = await getAccountsAPI(setAccountSpecs);
+const getAccountsFeedRangedAPI = async (setFeed, startDate, endDate) => {
+  const accountSpecs = await getAccountsAPI();
 
   const response = await fetch(`/api/v2/feed/account/${accountSpecs.accountUid}/category/${accountSpecs.defaultCategory}/transactions-between?minTransactionTimestamp=${startDate}&maxTransactionTimestamp=${endDate}`, {
     method: "GET",
@@ -103,7 +103,7 @@ const getAccountsFeedRangedAPI = async (setAccountSpecs, setFeed, setFeedAmount,
   const accountsFeedData = await response.json();
 
   setFeed(accountsFeedData.feedItems);
-  setFeedAmount(accountsFeedData.feedItems.amount);
+  // setFeedAmount(accountsFeedData.feedItems.amount);
 
   // console.log(accountsFeedData)
   return accountsFeedData.feedItems;
@@ -111,7 +111,7 @@ const getAccountsFeedRangedAPI = async (setAccountSpecs, setFeed, setFeedAmount,
 
 
 
-export {getAccountsBalanceAPI, getAccountsFeedAPI, getAccountsDetails, getAccountsFeedRangedAPI, getSavingsGoal}
+export {getAccountsBalanceAPI, getAccountsDetails, getAccountsFeedRangedAPI, getSavingsGoal}
 
 
 
