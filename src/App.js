@@ -16,7 +16,10 @@ function centsToDollars(cents) {
   return dollars;
 }
 
-// const myuuid = uuidv4();
+function dollarsToCents(dollars) {
+  const cents = Number.parseFloat(dollars) * 100;
+  return Math.round(cents);
+}
 
 
 
@@ -54,15 +57,50 @@ const App = () => {
     );
   };
 
-  const loadPage = async () => {
+  const loadBalances = async () => {
     getAccountsBalanceAPI(setBalance);
-    getAccountsDetails(setAccountDetails);
     getSavingsGoal(setAccountSpecs, setSavingsGoal);
   }
 
+  const calculateButton = () => {
+    getSum(setFeed, apiDateFormat(startDate), apiDateFormat(addSevenDays(startDate)))
+    loadBalances()
+  }
+
+  const transferButton = () => {
+    putSavingsGoal(dollarsToCents(sum))
+    setSum(0)
+    loadBalances()
+  }
+
+  
+  const getTransferAmount = (amount) => {
+    return {
+      "amount": {
+        "currency": "GBP",
+        "minorUnits": amount
+      }
+    }
+  }
+  
+  const putSavingsGoal = async (amount) => {
+    const transferUid = uuidv4()
+    const response = await fetch(`/api/v2/account/${accountSpecs.accountUid}/savings-goals/${savingsGoal.savingsGoalUid}/add-money/${transferUid}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(getTransferAmount(amount))
+    });
+    const accountsDetailsData = await response.json();
+    
+    // console.log(accountsDetailsData)
+    
+  }
   useEffect(() => {
-    loadPage()
-    // console.log('Your UUID is: ' + myuuid);
+    getAccountsDetails(setAccountDetails);
+    loadBalances()
   }, []);
 
   return (
@@ -85,7 +123,7 @@ const App = () => {
             </div>
 
             <div>
-              <button onClick={() => {getSum(setFeed, apiDateFormat(startDate), apiDateFormat(addSevenDays(startDate)))}}>Calculate</button>
+              <button onClick={ calculateButton }>Calculate</button>
             </div>
           </div>
           <div className="sumbox">
@@ -94,7 +132,7 @@ const App = () => {
               <div>{ sum.toFixed(2) } GBP</div>
             </div>
             <div>
-              <button>Add to Savings</button>
+              <button onClick={ transferButton }>Add to Savings</button>
             </div>
           </div>
         </div>
