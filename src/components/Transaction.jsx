@@ -3,7 +3,12 @@ import React from "react";
 const DisplayTransaction = (props) => {
 
   return (
-    <p>{ props.counterPartyName } { props.direction } { props.status } { props.amount }</p>
+    <div className="single-transaction">
+      <div> { props.counterPartyName } </div>
+      <div className="direction"> { props.direction } </div>
+      <div> { props.status } </div>
+      <div> { props.amount } </div>
+    </div>
   )
 }
 
