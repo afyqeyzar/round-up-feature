@@ -1,3 +1,5 @@
+
+
 const getAccountsAPI = async (setAccountSpecs) => {
   const response = await fetch('/api/v2/accounts', {
     method: "GET",
@@ -58,9 +60,9 @@ const getAccountsBalanceAPI = async (setAccountSpecs, setBalance) => {
   // console.log(accountsBalanceData.clearedBalance)
 };
 
-const getAccountsFeedAPI = async (setAccountSpecs, setFeed, setFeedAmount) => {
+const getAccountsFeedAPI = async (setAccountSpecs, setFeed, setFeedAmount, startDate) => {
   const accountSpecs = await getAccountsAPI(setAccountSpecs);
-  const response = await fetch(`/api/v2/feed/account/${accountSpecs.accountUid}/category/${accountSpecs.defaultCategory}?changesSince=${accountSpecs.createdAt}`, {
+  const response = await fetch(`/api/v2/feed/account/${accountSpecs.accountUid}/category/${accountSpecs.defaultCategory}?changesSince=${startDate}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
@@ -74,19 +76,28 @@ const getAccountsFeedAPI = async (setAccountSpecs, setFeed, setFeedAmount) => {
   // console.log(accountsFeedData.feedItems[0]);
 };
 
-export {getAccountsBalanceAPI, getAccountsFeedAPI, getAccountsIdentifiersAPI, getAccountsDetails}
+
+const getAccountsFeedRangedAPI = async (setAccountSpecs, setFeed, setFeedAmount, startDate, endDate) => {
+  const accountSpecs = await getAccountsAPI(setAccountSpecs);
+
+  const response = await fetch(`/api/v2/feed/account/${accountSpecs.accountUid}/category/${accountSpecs.defaultCategory}/transactions-between?minTransactionTimestamp=${startDate}&maxTransactionTimestamp=${endDate}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
+    },
+  });
+  const accountsFeedData = await response.json();
+
+  setFeed(accountsFeedData.feedItems);
+  setFeedAmount(accountsFeedData.feedItems.amount);
+
+  // console.log(accountsFeedData)
+  return accountsFeedData.feedItems;
+};
 
 
 
-  // const getAccountsFeedAPI = async () => {
-  //   const accountSpecs = await getAccountsAPI();
-  //   const response = await fetch(`/api/v2/feed/account/${accountSpecs.accountUid}/category/${accountSpecs.defaultCategory}/transactions-between?minTransactionTimestamp=${accountSpecs.createdAt}&maxTransactionTimestamp=2023-03-29T18:21:22.945Z`, {
-  //     method: "GET",
-  //     headers: {
-  //       Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
-  //     },
-  //   });
-  //   const accountsFeedData = await response.json();
+export {getAccountsBalanceAPI, getAccountsFeedAPI, getAccountsIdentifiersAPI, getAccountsDetails, getAccountsFeedRangedAPI}
 
-  //   console.log(accountsFeedData)
-  // };
+
+

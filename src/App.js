@@ -1,11 +1,14 @@
 import { assertTSExternalModuleReference } from "@babel/types";
 import { useEffect, useState } from "react"
 import { findRenderedDOMComponentWithClass } from "react-dom/test-utils";
-import { getAccountsBalanceAPI, getAccountsIdentifiersAPI, getAccountsFeedAPI, getAccountsDetails }from "./APIMethods"
+import { getAccountsBalanceAPI, getAccountsIdentifiersAPI, getAccountsFeedAPI, getAccountsDetails, getAccountsFeedRangedAPI }from "./APIMethods"
 import moment from 'moment';
 import './App.css'
 import sumDifferences from "./RoundUpMethod";
 import DisplayTransaction from "./Transaction"
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css"
+import { apiDateFormat, readableDateFormat, addSevenDays } from "./DateMethod";
 
 function centsToDollars(cents) {
   const dollars = (cents / 100).toFixed(2);
@@ -28,22 +31,33 @@ const App = () => {
   const [feed,setFeed] = useState([]);
   const [feedAmount,setFeedAmount] = useState([]);
   const [sum, setSum] = useState(0);
+  const [startDate, setStartDate] = useState(new Date("2023-01-01T12:34:56.000Z"));
+  
 
-  const getSum = async (setAccountSpecs, setFeed, setFeedAmount) => {
-    const accountsFeedData = await getAccountsFeedAPI(setAccountSpecs, setFeed, setFeedAmount);
+  const getSum = async (setAccountSpecs, setFeed, setFeedAmount, startDate, endDate) => {
+    // const accountsFeedData = await getAccountsFeedAPI(setAccountSpecs, setFeed, setFeedAmount, startDate);
+    const accountsFeedData = await getAccountsFeedRangedAPI(setAccountSpecs, setFeed, setFeedAmount, startDate, endDate);
     const sum = sumDifferences(accountsFeedData);
     setSum(sum)
     // console.log(feed[0])
     // console.log(sum)
   }
 
+  const PickDate = () => {
+    // console.log(formatDate(startDate));
+    return (
+      <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
+    );
+  };
+
   useEffect(() => {
     getAccountsIdentifiersAPI(setAccountSpecs,setIdentifiers);
     getAccountsBalanceAPI(setAccountSpecs,setBalance);
     getAccountsDetails(setAccountDetails);
     // getAccountsFeedAPI();
-    getSum(setAccountSpecs, setFeed, setFeedAmount);
-
+    // console.log(formatDate(startDate))
+    // getSum(setAccountSpecs, setFeed, setFeedAmount, formatDate(startDate));
+    // console.log(startDate)
     // console.log(feed);
   }, []);
 
@@ -61,13 +75,13 @@ const App = () => {
         <div className="calculator">
           <div>
             <div className="date-inputs">
-              <div>Date 1 input</div>
+              <div>{ PickDate() }</div>
               <div>to</div>
-              <div>Date 2 input</div>
+              <div>{ readableDateFormat(addSevenDays(startDate))}</div>
             </div>
 
             <div>
-              <button>Calculate</button>
+              <button onClick={() => {getSum(setAccountSpecs, setFeed, setFeedAmount, apiDateFormat(startDate), apiDateFormat(addSevenDays(startDate)))}}>Calculate</button>
             </div>
           </div>
           <div className="sumbox">
@@ -103,24 +117,6 @@ const App = () => {
           })}
         </div>
       </div>
-      
-      {/* <h1>Account Uid: { accountSpecs.accountUid }</h1>
-
-      <div>
-        <h1>Account Info</h1>
-        <h2>Account Number: { identifiers.accountIdentifier }</h2>
-        <h2>Sort Code: { identifiers.bankIdentifier }</h2>
-        <h2>IBAN: { identifiers.iban }</h2>
-        <h2>BIC: { identifiers.bic }</h2>
-      </div>
-
-      <div> 
-        <h1>Balances</h1>
-        <h2>Available Balance: { centsToDollars(balance.amount.minorUnits)} {balance.amount.currency}</h2>
-        <h2>Cleared Balance: { centsToDollars(balance.clearedBalance.minorUnits)} {balance.clearedBalance.currency}</h2>
-        <h2>Pending Balance: { centsToDollars(balance.pendingTransactions.minorUnits)} {balance.pendingTransactions.currency}</h2>
-      </div> */}
-
     </div>
   );
 }
