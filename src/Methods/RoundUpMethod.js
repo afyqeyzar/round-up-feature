@@ -1,9 +1,5 @@
 import { getAccountsFeedRangedAPI } from "./APIMethods";
-
-function centsToDollars(cents) {
-  const dollars = (cents / 100).toFixed(2);
-  return dollars;
-}
+import { centsToDollars } from "./DollarToCentsMethod";
 
 const getRoundUpDifference = (data) => {
   var difference = 0;
@@ -35,4 +31,4 @@ const getSum = async (setFeed, startDate, endDate, setSum) => {
 }
 
 
-export default getSum;
+export {getSum, sumDifferences};

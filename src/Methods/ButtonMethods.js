@@ -1,7 +1,7 @@
 import loadBalances from "./LoadBalances"
 import { apiDateFormat, addSevenDays } from "./DateMethod"
 import { dollarsToCents } from "./DollarToCentsMethod"
-import getSum from "./RoundUpMethod"
+import { getSum } from "./RoundUpMethod"
 import putSavingsGoal from "./TransferToSavings"
 
 const calculateButton = (setFeed, startDate, setSum, setBalance, setAccountSpecs, setSavingsGoal) => {
