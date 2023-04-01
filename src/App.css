@@ -94,7 +94,7 @@ h2 {
   -webkit-user-select: none;
   user-select: none;
   touch-action: manipulation;
-  width: fit-content;
+  /* width: fit-content; */
   word-break: break-word;
   border: 0;
 }
@@ -162,6 +162,7 @@ h2 {
   padding: 10px;
   justify-content: space-between;
   font-weight: 400;
+  text-align: center;
 }
 
 .direction {
@@ -169,4 +170,5 @@ h2 {
   align-items: center;
   padding: 0px 10px;
   margin: 0px 10px;
+  text-align: center;
 }
