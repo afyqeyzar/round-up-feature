@@ -12,30 +12,30 @@ node.js version 16 or higher
 
 ## Assumptions made:
 
-1. User is a Personal Account holder
-2. User only has a ONE GBP PRIMARY Account
-3. User already has a Savings Account with a goal
-4. User has one ONE Savings Account
-5. No pending transactions (all transactions are SETTLED)
+1. User is a Personal Account holder.
+2. User only has a ONE GBP PRIMARY Account.
+3. User already has a Savings Account with a goal.
+4. User has one ONE Savings Account.
+5. No pending transactions (all transactions are SETTLED).
 
 ## Preliminaries:
 
 1. [Sign-up](https://developer.starlingbank.com/signup) for Starling Bank's developer account.
-2. [Create a Application](https://developer.starlingbank.com/application/list)
-3. [Create a sandbox customer](https://developer.starlingbank.com/sandbox/select)
-4. Click Auto-simulate at the bottom of the page to simulate the customer's transaction
-5. Copy the customer's Access Token and paste it in the `.env` file
+2. [Create a Application](https://developer.starlingbank.com/application/list).
+3. [Create a sandbox customer](https://developer.starlingbank.com/sandbox/select).
+4. Click Auto-simulate at the bottom of the page to simulate the customer's transaction.
+5. Copy the customer's **Access Token** and paste it in the `.env` file.
 
 ## Running the webpage:
 
-1. Clone this repository
+1. Clone this repository.
 
 ```bash
 git clone git@github.com:afyqeyzar/starlingbanktest.git
 ```
 
-2. Make sure the Access Token is pasted in the `.env` file
-3. Run the file with
+2. Make sure the **Access Token** is pasted in the `.env` file.
+3. Run the file with.
 
 ```bash
 npm start
@@ -51,11 +51,12 @@ Click this button to make a savings account. The webpage will then refresh to di
 
 1. Select a date to be the starting date.
 2. Click the 'Calculate' button to calculate the total rounded-up amount for that given week.
-3. Click the 'Add to Savings' button to transfer the total rounded-up amount to Savings Account
+3. Click the 'Add to Savings' button to transfer the total rounded-up amount to Savings Account.
 
 ## Limitations / Improvements to be made:
 
-1. A more secure transferring method of money to the Savings Account (Two-Factor Authentication)
+1. A more secure transferring method of money to the Savings Account (Two-Factor Authentication).
 2. Display additional current and savings accounts in EUR.
 3. Be able to make use this "round-up" feature for EUR accounts.
 4. Incorporate pending transactions into the calculation of the rounded-up total.
+5. Transactions are not neatly aligned.
