@@ -16,6 +16,7 @@ import makeSavingsGoal from "./utils/MakeSavingsGoal";
 import { getSum } from "./utils/RoundUpMethod";
 import putSavingsGoal from "./utils/TransferToSavings";
 import { apiDateFormat } from "./utils/DateMethod";
+import refreshPage from "./utils/RefreshMethod";
 
 const App = () => {
   const [haveSavingsGoal, setHaveSavingsGoal] = useState(true);
@@ -34,10 +35,6 @@ const App = () => {
   const [startDate, setStartDate] = useState(
     new Date("2023-03-27T12:34:56.000Z")
   );
-
-  const refreshPage = () => {
-    window.location.reload(false);
-  };
 
   const makeSavingsGoalButton = async () => {
     await makeSavingsGoal();
@@ -94,9 +91,11 @@ const App = () => {
         </div>
       </div>
 
-      {false ? (
+      {haveSavingsGoal ? (
         <>
-          <button onClick={makeSavingsGoalButton}>Make Savings Goal</button>
+          <button className="button make-goal" onClick={makeSavingsGoalButton}>
+            Make Savings Goal
+          </button>
         </>
       ) : (
         <>
