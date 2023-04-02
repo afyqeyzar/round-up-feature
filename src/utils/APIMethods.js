@@ -12,8 +12,7 @@ const getAccountsAPI = async () => {
   const accountsData = await response.json();
 
   const accountsSpecs = accountsData.accounts[0];
-  // (accountsSpecs);
-  // console.log(accountsSpecs)
+
   return accountsSpecs;
 };
 
@@ -24,10 +23,7 @@ const getAccountsDetails = async (setAccountDetails) => {
   });
   const accountsDetailsData = await response.json();
 
-  // const accountsDetails = accountsDetailsData;
   setAccountDetails(accountsDetailsData);
-  // console.log(accountsSpecs)
-  // return accountsSpecs;
 };
 
 const getSavingsGoal = async (
@@ -50,31 +46,11 @@ const getSavingsGoal = async (
   } else {
     setHaveSavingsGoal(false);
     setAccountSpecs(accountSpecs);
-    // console.log("yes savings goal");
+
     if (Object.keys(accountsData).length > 0) {
-      // console.log(accountsData.savingsGoals[0]);
       setSavingsGoal(accountsData.savingsGoals[0]);
     }
   }
-
-  // console.log(Object.keys(accountsData).length);
-
-  // console.log(accountsData)
-};
-
-const getAccountsIdentifiersAPI = async (setIdentifiers) => {
-  const accountSpecs = await getAccountsAPI();
-  const response = await fetch(
-    `/api/v2/accounts/${accountSpecs.accountUid}/identifiers`,
-    {
-      method: "GET",
-      headers,
-    }
-  );
-  const accountsIdentifiersData = await response.json();
-
-  setIdentifiers(accountsIdentifiersData);
-  // console.log(accountsIdentifiersData)
 };
 
 const getAccountsBalanceAPI = async (setBalance) => {
@@ -89,7 +65,6 @@ const getAccountsBalanceAPI = async (setBalance) => {
   const accountsBalanceData = await response.json();
 
   setBalance(accountsBalanceData);
-  // console.log(accountsBalanceData.clearedBalance)
 };
 
 const getAccountsFeedRangedAPI = async (setFeed, startDate, endDate) => {
@@ -107,9 +82,6 @@ const getAccountsFeedRangedAPI = async (setFeed, startDate, endDate) => {
   const accountsFeedData = await response.json();
 
   setFeed(accountsFeedData.feedItems);
-  // setFeedAmount(accountsFeedData.feedItems.amount);
-
-  // console.log(accountsFeedData)
   return accountsFeedData.feedItems;
 };
 

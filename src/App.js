@@ -50,7 +50,7 @@ const App = () => {
   const calculateButton = (setFeed, setSum) => {
     console.log(startDate);
 
-    // First
+    // Calculate the sum of rounded up payments and sets state variable sum
     getSum(
       setFeed,
       apiDateFormat(startDate),
@@ -58,9 +58,8 @@ const App = () => {
       setSum
     );
 
-    // Then
+    // Loads current account and savings account balances
     loadBalances();
-    // makeSavingsGoal()
   };
 
   const transferButton = (accountSpecs, savingsGoal, sum, setSum) => {
@@ -72,11 +71,7 @@ const App = () => {
   useEffect(() => {
     getAccountsDetails(setAccountDetails);
     loadBalances();
-    console.log(haveSavingsGoal);
   }, []);
-
-  // const { minorUnits = "Placeholder", currency = "Placeholder" } =
-  //   balance?.amount;
 
   return (
     <div className="App">
@@ -175,7 +170,6 @@ const App = () => {
             <div className="title">Transactions</div>
             <div>
               {feed.map((feed) => {
-                // console.log(typeof feed.feedItemUid)
                 return (
                   <DisplayTransaction
                     counterPartyName={feed.counterPartyName}

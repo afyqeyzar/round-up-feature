@@ -1,4 +1,3 @@
-// import React from "react";
 import { getAccountsAPI } from "./APIMethods";
 
 const headers = {
