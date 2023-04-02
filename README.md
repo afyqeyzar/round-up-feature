@@ -24,7 +24,7 @@ node.js version 16 or higher
 2. [Create a Application](https://developer.starlingbank.com/application/list)
 3. [Create a sandbox customer](https://developer.starlingbank.com/sandbox/select)
 4. Click Auto-simulate at the bottom of the page to simulate the customer's transaction
-5. Copy the customer's Access Token and paste it in the '.env' file
+5. Copy the customer's Access Token and paste it in the `.env` file
 
 ## Running the webpage:
 
@@ -34,7 +34,7 @@ node.js version 16 or higher
 git clone git@github.com:afyqeyzar/starlingbanktest.git
 ```
 
-2. Make sure the Access Token is pasted in the '.env' file
+2. Make sure the Access Token is pasted in the `.env` file
 3. Run the file with
 
 ```bash
@@ -46,6 +46,12 @@ npm start
 Given that the sandbox customer is a brand new customer, they would NOT have a savings account. The webpage will then display a button to make a savings account.
 <img width="1677" alt="makeSavingsGoal" src="https://user-images.githubusercontent.com/83950596/229376210-14af9aca-5ae4-42d2-b319-d90c848b2c6e.png">
 Click this button to make a savings account. The webpage will then refresh to display the main page.
+
+## Once on webpage:
+
+1. Select a date to be the starting date.
+2. Click the 'Calculate' button to calculate the total rounded-up amount for that given week.
+3. Click the 'Add to Savings' button to transfer the total rounded-up amount to Savings Account
 
 ## Limitations / Improvements to be made:
 
