@@ -1,5 +1,7 @@
 # Starling Bank Engineering Technical Challenge
 
+by Nor Afyq Eyzar bin Abu Zaharoff (norafyqe@gmail.com)
+
 ### Developed a "round-up" feature for costumers using Starling Bank's public developer API. The amount rounded up will be calculated from a customer's transactions for a week beginning with a date selected from the customer. This amount will then be transfered to their [Savings Goal](https://www.starlingbank.com/blog/introducing-goals/).
 
 <img width="1680" alt="mainPage" src="https://user-images.githubusercontent.com/83950596/229376362-53b485ec-b408-41e3-8376-077f3847de23.png">
