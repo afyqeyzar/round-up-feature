@@ -8,4 +8,4 @@ function dollarsToCents(dollars) {
   return Math.round(cents);
 }
 
-export {centsToDollars, dollarsToCents} 
+export { centsToDollars, dollarsToCents };
