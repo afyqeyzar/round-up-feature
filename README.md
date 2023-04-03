@@ -60,3 +60,4 @@ Click this button to make a savings account. The webpage will then refresh to di
 3. Be able to make use this "round-up" feature for EUR accounts.
 4. Incorporate pending transactions into the calculation of the rounded-up total.
 5. Transactions are not neatly aligned.
+6. Method to track Savings Goal status.
