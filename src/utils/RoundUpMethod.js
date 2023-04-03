@@ -3,7 +3,6 @@ import { centsToDollars } from "./DollarToCentsMethod";
 
 const getRoundUpDifference = (data) => {
   var difference = 0;
-  // console.log(data.direction);
   if (data.direction == "OUT") {
     difference =
       Math.ceil(centsToDollars(data.amount.minorUnits)) -
@@ -15,14 +14,11 @@ const getRoundUpDifference = (data) => {
 
 const sumDifferences = (dataArray) => {
   var sum = 0;
-  // console.log(typeof sum);
 
   for (const data of dataArray) {
-    // console.log(getRoundUpDifference(data));
     sum += parseFloat(getRoundUpDifference(data));
   }
 
-  // console.log(sum)
   return sum;
 };
 

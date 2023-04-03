@@ -22,7 +22,7 @@ const getTransferAmount = (amount) => {
 
 const putSavingsGoal = async (accountSpecs, savingsGoal, amount) => {
   const transferUid = uuidv4();
-  const response = await fetch(
+  await fetch(
     `/api/v2/account/${accountSpecs.accountUid}/savings-goals/${savingsGoal.savingsGoalUid}/add-money/${transferUid}`,
     {
       method: "PUT",
@@ -30,7 +30,6 @@ const putSavingsGoal = async (accountSpecs, savingsGoal, amount) => {
       body: JSON.stringify(getTransferAmount(amount)),
     }
   );
-  // const accountsDetailsData = await response.json();
 };
 
 export default putSavingsGoal;

@@ -46,7 +46,6 @@ const getSavingsGoal = async (
   const accountsData = await response.json();
 
   if (accountsData.savingsGoals.length === 0) {
-    console.log("No savings goal");
   } else {
     setHaveSavingsGoal(false);
     setAccountSpecs(accountSpecs);

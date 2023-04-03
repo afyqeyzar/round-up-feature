@@ -32,8 +32,6 @@ const makeSavingsGoal = async () => {
     }
   );
   const accountsDetailsData = await response.json();
-
-  console.log(accountsDetailsData);
 };
 
 export default makeSavingsGoal;
