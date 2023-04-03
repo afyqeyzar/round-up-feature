@@ -1,3 +1,7 @@
+// All Starling API calls are being proxied through the dev server to avoid CORS issues.
+// https://create-react-app.dev/docs/proxying-api-requests-in-development/
+// In production setting, all API calls will be made on the server side.
+
 const headers = {
   Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
   Accept: "application/json",
@@ -74,9 +78,7 @@ const getAccountsFeedRangedAPI = async (setFeed, startDate, endDate) => {
     `/api/v2/feed/account/${accountSpecs.accountUid}/category/${accountSpecs.defaultCategory}/transactions-between?minTransactionTimestamp=${startDate}&maxTransactionTimestamp=${endDate}`,
     {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_STARLING_ACCESS_TOKEN}`,
-      },
+      headers,
     }
   );
   const accountsFeedData = await response.json();
