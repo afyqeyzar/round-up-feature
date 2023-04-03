@@ -44,12 +44,9 @@ const App = () => {
   const loadBalances = () => {
     getAccountsBalanceAPI(setBalance);
     getSavingsGoal(setAccountSpecs, setSavingsGoal, setHaveSavingsGoal);
-    // console.log(savingsGoal)
   };
 
   const calculateButton = (setFeed, setSum) => {
-    console.log(startDate);
-
     // Calculate the sum of rounded up payments and sets state variable sum
     getSum(
       setFeed,
