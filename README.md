@@ -22,7 +22,7 @@ node.js version 16 or higher
 
 1. [Sign-up](https://developer.starlingbank.com/signup) for Starling Bank's developer account.
 2. [Create a Application](https://developer.starlingbank.com/application/list).
-3. [Create a sandbox customer](https://developer.starlingbank.com/sandbox/select).
+3. [Create a sandbox customer](https://developer.starlingbank.com/sandbox/select) who is a Personal Account holder.
 4. Click Auto-simulate at the bottom of the page to simulate the customer's transaction.
 5. Copy the customer's **Access Token** and paste it in the `.env` file.
 
