@@ -18,7 +18,7 @@ node.js version 16 or higher
 4. User has one ONE Savings Account.
 5. No pending transactions (all transactions are SETTLED).
 
-## Preliminaries:
+## Prerequisite Set Up:
 
 1. [Sign-up](https://developer.starlingbank.com/signup) for Starling Bank's developer account.
 2. [Create a Application](https://developer.starlingbank.com/application/list).
