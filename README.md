@@ -1,4 +1,4 @@
-# Starling Bank Engineering Technical Challenge
+# Round-up Feature using Starling Bank's Developer API
 
 by Nor Afyq Eyzar bin Abu Zaharoff (norafyqe@gmail.com)
 
